@@ -2,7 +2,7 @@ import argparse
 import asyncio
 from aiopath import AsyncPath
 from aioshutil import copyfile
-
+import logging
 parser = argparse.ArgumentParser(description="Sorting folder")
 parser.add_argument("--source", "-s", help="Source", required=True)
 parser.add_argument("--output", "-o", help="Output", default="dist")
@@ -29,8 +29,11 @@ async def copy_file(file: AsyncPath):
         await ext_folder.mkdir(exist_ok=True, parents=True)
         await copyfile(file, ext_folder / file.name)
     except OSError as err:
-        print("Error", err)
+        logging.error(err)
 
 
 if __name__ == "__main__":
+
+    logging.basicConfig(level = logging.INFO)
+
     asyncio.run(grabs_folder(source))
